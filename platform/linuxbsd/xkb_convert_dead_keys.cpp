@@ -5,6 +5,7 @@
 xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t xkb_keysym){
     switch (xkb_keysym) {
         case XKB_KEY_dead_grave: // not tested
+            xkb_keysym = XKB_KEY_grave;
             break;
         case XKB_KEY_dead_acute:
             xkb_keysym = XKB_KEY_acute;
@@ -45,7 +46,7 @@ xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t xkb_keysym){
             xkb_keysym = XKB_KEY_ogonek;
             break;
         case XKB_KEY_dead_iota:
-            // haven't found non dead equivalent
+            xkb_keysym = XKB_KEY_Greek_iota;
             break;
         case XKB_KEY_dead_voiced_sound:
             xkb_keysym = XKB_KEY_voicedsound;
@@ -104,7 +105,8 @@ xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t xkb_keysym){
 
         /* extra dead elements for German T3 layout */
         case XKB_KEY_dead_lowline:
-            //
+            //xkb_keysym = XKB_KEY_underscore;
+            //xkb_keysym = XKB_KEY_underbar;
             break;
         case XKB_KEY_dead_aboveverticalline:
             //
