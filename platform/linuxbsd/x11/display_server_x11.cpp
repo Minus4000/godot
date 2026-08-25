@@ -29,6 +29,7 @@
 /**************************************************************************/
 
 #include "display_server_x11.h"
+#include "core/error/error_macros.h"
 
 #ifdef X11_ENABLED
 
@@ -3851,6 +3852,7 @@ String DisplayServerX11::keyboard_get_layout_name(int p_index) const {
 }
 
 Key DisplayServerX11::keyboard_get_keycode_from_physical(Key p_keycode) const {
+	WARN_PRINT("DisplayServerX11::keyboard_get_keycode_from_physical");
 	Key modifiers = p_keycode & KeyModifierMask::MODIFIER_MASK;
 	Key keycode_no_mod = p_keycode & KeyModifierMask::CODE_MASK;
 	unsigned int xkeycode = KeyMappingX11::get_xlibcode(keycode_no_mod);
@@ -3869,21 +3871,28 @@ Key DisplayServerX11::keyboard_get_keycode_from_physical(Key p_keycode) const {
 }
 
 Key DisplayServerX11::keyboard_get_label_from_physical(Key p_keycode) const {
+	print_line("DisplayServerX11::keyboard_get_label_from_physical: key=", p_keycode);
 	Key modifiers = p_keycode & KeyModifierMask::MODIFIER_MASK;
 	Key keycode_no_mod = p_keycode & KeyModifierMask::CODE_MASK;
 	unsigned int xkeycode = KeyMappingX11::get_xlibcode(keycode_no_mod);
+	print_line("unsigned int xkeycode = KeyMappingX11::get_xlibcode(keycode_no_mod) -> ", xkeycode);
 	KeySym xkeysym = XkbKeycodeToKeysym(x11_display, xkeycode, keyboard_get_current_layout(), 0);
+	print_line("KeySym xkeysym = XkbKeycodeToKeysym(x11_display, xkeycode, keyboard_get_current_layout(), 0) -> ", xkeysym);
 	if (is_ascii_lower_case(xkeysym)) {
 		xkeysym -= ('a' - 'A');
+		print_line("if is_ascii_lower_case: xkeysym -= ('a' - 'A') -> ", xkeysym);
 	}
 
 	Key key = KeyMappingX11::get_keycode(xkeysym);
+	print_line("Key key = KeyMappingX11::get_keycode(xkeysym) -> ", key);
 #ifdef XKB_ENABLED
 	if (xkb_loaded_v08p) {
 		char32_t chr = xkb_keysym_to_utf32(xkb_keysym_to_upper(xkeysym));
+		print_line("char32_t chr = xkb_keysym_to_utf32(xkb_keysym_to_upper(xkeysym)) -> ", chr);
 		if (chr != 0) {
 			String keysym = String::chr(chr);
 			key = fix_key_label(keysym[0], KeyMappingX11::get_keycode(xkeysym));
+			print_line("key = fix_key_label(keysym[0], KeyMappingX11::get_keycode(xkeysym)) -> ", key);		
 		}
 	}
 #endif
@@ -3891,6 +3900,7 @@ Key DisplayServerX11::keyboard_get_label_from_physical(Key p_keycode) const {
 	// If not found, fallback to QWERTY.
 	// This should match the behavior of the event pump
 	if (key == Key::NONE) {
+		print_line("return p_keycode;");
 		return p_keycode;
 	}
 	return (Key)(key | modifiers);
@@ -7638,6 +7648,7 @@ DisplayServerX11::~DisplayServerX11() {
 }
 
 void DisplayServerX11::register_x11_driver() {
+	WARN_PRINT("register_x11_driver");
 	register_create_function("x11", create_func, get_rendering_drivers_func);
 }
 

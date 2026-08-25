@@ -29,6 +29,9 @@
 /**************************************************************************/
 
 #include "display_server_wayland.h"
+#include "core/error/error_macros.h"
+#include "core/string/print_string.h"
+#include <cstdio>
 
 #ifdef WAYLAND_ENABLED
 
@@ -1878,6 +1881,7 @@ String DisplayServerWayland::keyboard_get_layout_name(int p_index) const {
 }
 
 Key DisplayServerWayland::keyboard_get_keycode_from_physical(Key p_keycode) const {
+	WARN_PRINT_ED("DisplayServerWayland::keyboard_get_keycode_from_physical");
 	MutexLock mutex_lock(wayland_thread.mutex);
 
 	Key key = wayland_thread.keyboard_get_key_from_physical(p_keycode);
@@ -1901,6 +1905,7 @@ Key DisplayServerWayland::keyboard_get_keycode_from_physical(Key p_keycode) cons
 }
 
 Key DisplayServerWayland::keyboard_get_label_from_physical(Key p_keycode) const {
+	print_line("DisplayServerWayland::keyboard_get_label_from_physical");
 	MutexLock mutex_lock(wayland_thread.mutex);
 
 	return wayland_thread.keyboard_get_label_from_physical(p_keycode);

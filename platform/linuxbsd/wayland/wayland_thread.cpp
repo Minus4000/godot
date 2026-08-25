@@ -29,6 +29,9 @@
 /**************************************************************************/
 
 #include "wayland_thread.h"
+#include "core/error/error_macros.h"
+#include "core/string/print_string.h"
+#include "core/variant/variant.h"
 
 #ifdef WAYLAND_ENABLED
 
@@ -5844,28 +5847,38 @@ String WaylandThread::keyboard_get_layout_name(int p_index) const {
 Key WaylandThread::keyboard_get_key_from_physical(Key p_key) const {
 	SeatState *ss = wl_seat_get_seat_state(wl_seat_current);
 
+	WARN_PRINT(vformat("WaylandThread::keyboard_get_key_from_physical: key=%d ", p_key));
+
 	if (ss && ss->xkb_state) {
 		Key modifiers = p_key & KeyModifierMask::MODIFIER_MASK;
 		Key keycode_no_mod = p_key & KeyModifierMask::CODE_MASK;
 
 		xkb_keycode_t xkb_keycode = KeyMappingXKB::get_xkb_keycode(keycode_no_mod);
-		Key key = KeyMappingXKB::get_keycode(xkb_state_key_get_one_sym(ss->xkb_state, xkb_keycode));
+		WARN_PRINT(vformat("xkb_keycode_t xkb_keycode = KeyMappingXKB::get_xkb_keycode(keycode_no_mod) -> %d", xkb_keycode));
+		xkb_keycode_t xkb_keysym = xkb_state_key_get_one_sym(ss->xkb_state, xkb_keycode);
+		WARN_PRINT(vformat("xkb_keycode_t xkb_keysym = xkb_state_key_get_one_sym(ss->xkb_state, xkb_keycode) -> %d", xkb_keysym));
+		Key key = KeyMappingXKB::get_keycode(xkb_keysym);
 		return (Key)(key | modifiers);
 	}
 
+	ERR_PRINT("return p_key");
 	return p_key;
 }
 
 Key WaylandThread::keyboard_get_label_from_physical(Key p_key) const {
 	SeatState *ss = wl_seat_get_seat_state(wl_seat_current);
 
+	print_line("keyboard_get_label_from_physical: key =", p_key);
 	if (ss && ss->xkb_state) {
 		Key modifiers = p_key & KeyModifierMask::MODIFIER_MASK;
 		Key keycode_no_mod = p_key & KeyModifierMask::CODE_MASK;
 
 		xkb_keycode_t xkb_keycode = KeyMappingXKB::get_xkb_keycode(keycode_no_mod);
+		print_line("xkb_keycode_t xkb_keycode = KeyMappingXKB::get_xkb_keycode(keycode_no_mod) -> ", xkb_keycode);
 		xkb_keycode_t xkb_keysym = xkb_state_key_get_one_sym(ss->xkb_state, xkb_keycode);
+		print_line("xkb_keycode_t xkb_keysym = xkb_state_key_get_one_sym(ss->xkb_state, xkb_keycode) -> ", xkb_keysym);
 		char32_t chr = xkb_keysym_to_utf32(xkb_keysym_to_upper(xkb_keysym));
+		print_line("char32_t chr = xkb_keysym_to_utf32(xkb_keysym_to_upper(xkb_keysym)) -> ", chr);
 		if (chr != 0) {
 			String keysym = String::chr(chr);
 			Key key = fix_key_label(keysym[0], KeyMappingXKB::get_keycode(xkb_keysym));
@@ -5873,6 +5886,7 @@ Key WaylandThread::keyboard_get_label_from_physical(Key p_key) const {
 		}
 	}
 
+	print_line("return p_key: ", p_key);
 	return p_key;
 }
 
