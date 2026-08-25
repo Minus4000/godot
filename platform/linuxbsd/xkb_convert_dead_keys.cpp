@@ -2,57 +2,57 @@
 #include "xkbcommon/xkbcommon-keysyms.h"
 #include "xkbcommon/xkbcommon.h"
 
-xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t xkb_keysym){
-    switch (xkb_keysym) {
+xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t p_keysym){
+    switch (p_keysym) {
         case XKB_KEY_dead_grave: // not tested
-            xkb_keysym = XKB_KEY_grave;
+            p_keysym = XKB_KEY_grave;
             break;
         case XKB_KEY_dead_acute:
-            xkb_keysym = XKB_KEY_acute;
+            p_keysym = XKB_KEY_acute;
             break;
         case XKB_KEY_dead_circumflex:
-            xkb_keysym = XKB_KEY_asciicircum;
+            p_keysym = XKB_KEY_asciicircum;
             break;
 
         // from here not yet tested
         case XKB_KEY_dead_tilde: /*XKB_KEY_dead_perispomeni*/
-            xkb_keysym = XKB_KEY_asciitilde;
+            p_keysym = XKB_KEY_asciitilde;
             break;
         case XKB_KEY_dead_macron:
-            xkb_keysym = XKB_KEY_macron;
+            p_keysym = XKB_KEY_macron;
             break;
         case XKB_KEY_dead_breve:
-            xkb_keysym = XKB_KEY_breve;
+            p_keysym = XKB_KEY_breve;
             break;
         case XKB_KEY_dead_abovedot:
-            xkb_keysym = XKB_KEY_abovedot;
+            p_keysym = XKB_KEY_abovedot;
             break;
         case XKB_KEY_dead_diaeresis:
-            xkb_keysym = XKB_KEY_diaeresis;
+            p_keysym = XKB_KEY_diaeresis;
             break; 
         case XKB_KEY_dead_abovering:
             // haven't found non dead equivalent
             break;
         case XKB_KEY_dead_doubleacute:
-            xkb_keysym = XKB_KEY_doubleacute;
+            p_keysym = XKB_KEY_doubleacute;
             break; 
         case XKB_KEY_dead_caron:
-            xkb_keysym = XKB_KEY_caron;
+            p_keysym = XKB_KEY_caron;
             break; 
         case XKB_KEY_dead_cedilla:
-            xkb_keysym = XKB_KEY_cedilla;
+            p_keysym = XKB_KEY_cedilla;
             break;
         case XKB_KEY_dead_ogonek:
-            xkb_keysym = XKB_KEY_ogonek;
+            p_keysym = XKB_KEY_ogonek;
             break;
         case XKB_KEY_dead_iota:
-            xkb_keysym = XKB_KEY_Greek_iota;
+            p_keysym = XKB_KEY_Greek_iota;
             break;
         case XKB_KEY_dead_voiced_sound:
-            xkb_keysym = XKB_KEY_voicedsound;
+            p_keysym = XKB_KEY_voicedsound;
             break;
         case XKB_KEY_dead_semivoiced_sound:
-            xkb_keysym = XKB_KEY_semivoicedsound;
+            p_keysym = XKB_KEY_semivoicedsound;
             break;
         case XKB_KEY_dead_belowdot:
             //
@@ -100,7 +100,7 @@ xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t xkb_keysym){
             //
             break;
         case XKB_KEY_dead_currency:            
-            xkb_keysym = XKB_KEY_currency;
+            p_keysym = XKB_KEY_currency;
             break;
 
         /* extra dead elements for German T3 layout */
@@ -120,34 +120,34 @@ xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t xkb_keysym){
 
         /* dead vowels for universal syllable entry */
         case XKB_KEY_dead_a:
-            xkb_keysym = XKB_KEY_a;
+            p_keysym = XKB_KEY_a;
             break;
         case XKB_KEY_dead_A:
-            xkb_keysym = XKB_KEY_A;
+            p_keysym = XKB_KEY_A;
             break;
         case XKB_KEY_dead_e:
-            xkb_keysym = XKB_KEY_e;
+            p_keysym = XKB_KEY_e;
             break;
         case XKB_KEY_dead_E:
-            xkb_keysym = XKB_KEY_E;
+            p_keysym = XKB_KEY_E;
             break;
         case XKB_KEY_dead_i:
-            xkb_keysym = XKB_KEY_i;
+            p_keysym = XKB_KEY_i;
             break;
         case XKB_KEY_dead_I:
-            xkb_keysym = XKB_KEY_I;
+            p_keysym = XKB_KEY_I;
             break;
         case XKB_KEY_dead_o:
-            xkb_keysym = XKB_KEY_o;
+            p_keysym = XKB_KEY_o;
             break;
         case XKB_KEY_dead_O:
-            xkb_keysym = XKB_KEY_O;
+            p_keysym = XKB_KEY_O;
             break;
         case XKB_KEY_dead_u:
-            xkb_keysym = XKB_KEY_u;
+            p_keysym = XKB_KEY_u;
             break;
         case XKB_KEY_dead_U:
-            xkb_keysym = XKB_KEY_U;
+            p_keysym = XKB_KEY_U;
             break;
         case XKB_KEY_dead_small_schwa:
             //
@@ -161,5 +161,5 @@ xkb_keysym_t xkb_convert_if_dead_key(xkb_keysym_t xkb_keysym){
     }
 
 
-    return xkb_keysym;
+    return p_keysym;
 }
