@@ -29,6 +29,7 @@
 /**************************************************************************/
 
 #include "wayland_thread.h"
+#include "xkbcommon/xkbcommon-keysyms.h" 
 #include "core/error/error_macros.h"
 #include "core/string/print_string.h"
 #include "core/variant/variant.h"
@@ -5877,6 +5878,27 @@ Key WaylandThread::keyboard_get_label_from_physical(Key p_key) const {
 		print_line("xkb_keycode_t xkb_keycode = KeyMappingXKB::get_xkb_keycode(keycode_no_mod) -> ", xkb_keycode);
 		xkb_keycode_t xkb_keysym = xkb_state_key_get_one_sym(ss->xkb_state, xkb_keycode);
 		print_line("xkb_keycode_t xkb_keysym = xkb_state_key_get_one_sym(ss->xkb_state, xkb_keycode) -> ", xkb_keysym);
+
+		char keysym_name[64];
+		xkb_keysym_get_name(xkb_keysym, keysym_name, sizeof(keysym_name));
+
+		print_line(vformat("XKB keysym: %s", keysym_name));
+		print_line(vformat("XKB keysym to upper: %s", xkb_keysym_to_upper(xkb_keysym)));
+
+		switch (xkb_keysym) {
+			case XKB_KEY_dead_acute:
+				xkb_keysym = XKB_KEY_acute;
+				break;
+			case XKB_KEY_dead_circumflex:
+				xkb_keysym = XKB_KEY_asciicircum;
+				break;
+		}
+
+		xkb_keysym_get_name(xkb_keysym, keysym_name, sizeof(keysym_name));
+
+		print_line(vformat("XKB keysym: %s", keysym_name));
+		print_line(vformat("XKB keysym to upper: %s", xkb_keysym_to_upper(xkb_keysym)));
+
 		char32_t chr = xkb_keysym_to_utf32(xkb_keysym_to_upper(xkb_keysym));
 		print_line("char32_t chr = xkb_keysym_to_utf32(xkb_keysym_to_upper(xkb_keysym)) -> ", chr);
 		if (chr != 0) {
